@@ -7,12 +7,15 @@ public class Fruit {
 
 	int id;
 
+	String name;
+
 	String description;
 
 	int appInstance;
 
-	public Fruit(int id, String description, int appInstance) {
+	public Fruit(int id, String name, String description, int appInstance) {
 		this.id = id;
+		this.name = name;
 		this.description = description;
 		this.appInstance = appInstance;
 	}
@@ -23,6 +26,14 @@ public class Fruit {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDescription() {
@@ -43,7 +54,8 @@ public class Fruit {
 
 	@Override public String toString() {
 		return "Fruit{" +
-				"id='" + id + '\'' +
+				"id=" + id +
+				", name='" + name + '\'' +
 				", description='" + description + '\'' +
 				", appInstance=" + appInstance +
 				'}';

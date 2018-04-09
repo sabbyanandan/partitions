@@ -1,0 +1,112 @@
+<head>
+
+    <style>
+        .tempAlert {
+            position: fixed;
+            width: 96%;
+            text-align: center;
+            font-size: 30px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .tempAlert-100100 {
+            bottom: 50px;
+        }
+
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load("current", {packages: ["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['ID', 'Group', 'Counter'],
+                ['Apple', -1, 0],
+                ['Orange', -1, 0],
+                ['Pineapple', -1, 0],
+                ['Cherry', -1, 0],
+                ['Peach', -1, 0]
+            ]);
+
+            var appleCounter = 0;
+            var orangeCounter = 0;
+            var pineappleCounter = 0;
+            var cherryCounter = 0;
+            var peachCounter = 0;
+
+            var ws = new WebSocket("ws://localhost:9292/websocket");
+            ws.onopen = function () {
+                console.log("Websocket connection open ...");
+                performModuloOps();
+            };
+            ws.onmessage = function (evt) {
+                var received_msg = JSON.parse(evt.data);
+                if (received_msg.name === 'apple') {
+                    appleCounter = ((appleCounter === 0) ? 1 : ++appleCounter);
+                    data.setValue(0, 1, received_msg.appInstance);
+                    data.setValue(0, 2, appleCounter);
+                    chart.draw(data, options);
+                } else if (received_msg.name === 'orange') {
+                    orangeCounter = ((orangeCounter === 0) ? 1 : ++orangeCounter);
+                    data.setValue(1, 1, received_msg.appInstance);
+                    data.setValue(1, 2, orangeCounter);
+                    chart.draw(data, options);
+                } else if (received_msg.name === 'pineapple') {
+                    pineappleCounter = ((pineappleCounter === 0) ? 1 : ++pineappleCounter);
+                    data.setValue(2, 1, received_msg.appInstance);
+                    data.setValue(2, 2, pineappleCounter);
+                    chart.draw(data, options);
+                } else if (received_msg.name === 'cherry') {
+                    cherryCounter = ((cherryCounter === 0) ? 1 : ++cherryCounter);
+                    data.setValue(3, 1, received_msg.appInstance);
+                    data.setValue(3, 2, cherryCounter);
+                    chart.draw(data, options);
+                } else if (received_msg.name === 'peach') {
+                    peachCounter = ((peachCounter === 0) ? 1 : ++peachCounter);
+                    data.setValue(4, 1, received_msg.appInstance);
+                    data.setValue(4, 2, peachCounter);
+                    chart.draw(data, options);
+                }
+                console.log("Message received for ... App Instance - " + received_msg.appInstance + " .. with .. fruit = " + received_msg.name);
+            };
+
+            var options = {
+                title: 'Application Instance Group vs. Fruit Bucket',
+                colorAxis: {colors: ['yellow', 'red']},
+                vAxis: {baseline: 10, title: 'Fruit Count in the Bucket'},
+                hAxis: {minValue: -1, maxValue: 2, title: 'Application Instance Group'},
+                bubble: {
+                    textStyle: {
+                        fontSize: 12,
+                        fontName: 'Times-Roman',
+                        color: 'green',
+                        bold: true,
+                        italic: true
+                    }
+                }
+            };
+
+            var chart = new google.visualization.BubbleChart(document.getElementById('textstyle'));
+            chart.draw(data, options);
+
+            function performModuloOps() {
+
+                var mathCntr = document.getElementById('mathCntr');
+
+                mathCntr.innerHTML = "<strong>The Math for 3 App Instances<br /><br /></strong>" +
+                        " Apple will land at: " + 0 % 3 + " <i>[ie: 0 % 3]</i> <br />" +
+                        " Orange will land at: " + 1 % 3 + " <i>[ie: 1 % 3]</i> <br />" +
+                        " Pineapple will land at: " + 2 % 3 + " <i>[ie: 2 % 3]</i> <br />" +
+                        " Cherry will land at: " + 3 % 3 + " <i>[ie: 3 % 3]</i> <br />" +
+                        " Peach will land at: " + 4 % 3 + " <i>[ie: 4 % 3]</i> <br />";
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="textstyle" style="width: 100%; height: 600px;"></div>
+<div id="mathCntr" class="tempAlert tempAlert-100100"></div>
+</body>
+</html>

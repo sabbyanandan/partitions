@@ -31,7 +31,7 @@ public class FruitSourceApplication {
 	public Fruit confluentHandler() {
 		String fruit = fruits.get(new Random().nextInt(fruits.size()));
 		String description = descriptions.get(new Random().nextInt(descriptions.size()));
-		Fruit newFruit = new Fruit(fruits.indexOf(fruit), fruit.toUpperCase() + " - " + description,
+		Fruit newFruit = new Fruit(fruits.indexOf(fruit), fruit, fruit.toUpperCase() + " - " + description,
 				(fruits.indexOf(fruit) % 3));
 		logger.info("Sending = " + newFruit);
 		return newFruit;
