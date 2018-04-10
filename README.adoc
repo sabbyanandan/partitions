@@ -1,0 +1,33 @@
+= Stream Partitions Demo
+
+== LOCAL
+[source,bash,options=nowrap,subs=attributes]
+----
+app register --name fruits --type source --uri file:///Users/sanandan/CodeSpaces/sandbox/partitions/fruitsource/target/fruitsource-0.0.1-SNAPSHOT.jar --force
+app register --name appender --type processor --uri file:///Users/sanandan/CodeSpaces/sandbox/partitions/appender/target/appender-0.0.1-SNAPSHOT.jar --force
+app register --name log --type sink --uri maven://org.springframework.cloud.stream.app:log-sink-rabbit:1.3.1.RELEASE --force
+
+stream create foo --definition "fruits | appender | websocket --server.port=9000"
+stream deploy --name foo --properties "app.fruits.producer.partitionKeyExpression=payload.id,deployer.appender.count=3"
+----
+
+== CF
+[source,bash,options=nowrap,subs=attributes]
+----
+app register --name fruits --type source --uri https://github.com/sabbyanandan/partitions/raw/master/jars/fruitsource-0.0.1-SNAPSHOT.jar --force
+app register --name appender --type processor --uri https://github.com/sabbyanandan/partitions/raw/master/jars/appender-0.0.1-SNAPSHOT.jar --force
+app register --name websocket --type sink --uri maven://org.springframework.cloud.stream.app:websocket-sink-rabbit:1.3.1.RELEASE --force
+stream create foo --definition "fruits | appender | websocket --server.port=9000 --management.security.enabled=false"
+stream deploy --name foo --properties "app.fruits.producer.partitionKeyExpression=payload.id,deployer.appender.count=3"
+----
+
+== K8S
+[source,bash,options=nowrap,subs=attributes]
+----
+app register --name fruits1 --type source --uri docker:sabby/fruitsource:0.0.2-SNAPSHOT --force
+app register --name appender1 --type processor --uri docker:sabby/appender:0.0.3-SNAPSHOT --force
+app register --name websocket --type sink --uri docker:springcloudstream/websocket-sink-rabbit:1.3.0.RELEASE --force
+
+stream create foo --definition "fruits1 | appender1 | websocket --server.port=9000 --management.security.enabled=false"
+stream deploy --name foo --properties "app.fruits1.producer.partitionKeyExpression=payload.id,deployer.appender1.count=3,deployer.websocket.kubernetes.createLoadBalancer=true,deployer.fruits1.kubernetes.readinessProbePath=/actuator/info,deployer.appender1.kubernetes.readinessProbePath=/actuator/info,deployer.fruits1.kubernetes.livenessProbePath=/actuator/health,deployer.appender1.kubernetes.livenessProbePath=/actuator/health"
+----
