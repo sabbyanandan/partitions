@@ -15,7 +15,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 @EnableBinding(Processor.class)
 public class AppenderApplication {
 
-	@Value("${SPRING_APPLICATION_INDEX}")
+	@Value("${SPRING_APPLICATION_INDEX:${spring.application.index}}")
 	private String applicationIndex;
 
 	Logger logger = LoggerFactory.getLogger(AppenderApplication.class);
