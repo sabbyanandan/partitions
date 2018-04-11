@@ -1,7 +1,5 @@
 FROM java:8-alpine
 
-ARG JAR_FILE
+ADD target/fruitsource-0.0.2-SNAPSHOT.jar fruitsource.jar
 
-ADD target/${JAR_FILE} fruitsource.jar
-
-ENTRYPOINT exec java -Djava.security.egd=file:/dev/./urandom -jar /fruitsource.jar
+ENTRYPOINT ["java","-jar","/fruitsource.jar"]
