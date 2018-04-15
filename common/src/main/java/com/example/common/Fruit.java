@@ -11,6 +11,8 @@ public class Fruit {
 
 	int appInstance;
 
+	int instanceCount;
+
 	public Fruit() {
 	}
 
@@ -19,10 +21,10 @@ public class Fruit {
 		this.name = name;
 	}
 
-	public Fruit(int id, String name, int appInstance) {
+	public Fruit(int id, String name, int instanceCount) {
 		this.id = id;
 		this.name = name;
-		this.appInstance = appInstance;
+		this.instanceCount = instanceCount;
 	}
 
 	public int getId() {
@@ -49,11 +51,21 @@ public class Fruit {
 		this.appInstance = appInstance;
 	}
 
+	public int getInstanceCount() {
+		return instanceCount;
+	}
+
+	public void setInstanceCount(int partitionCount) {
+		this.instanceCount = partitionCount;
+	}
+
 	@Override public String toString() {
 		return "Fruit{" +
 				"id=" + id +
 				", name='" + name + '\'' +
 				", appInstance=" + appInstance +
+				", instanceCount=" + instanceCount +
 				'}';
 	}
+
 }
