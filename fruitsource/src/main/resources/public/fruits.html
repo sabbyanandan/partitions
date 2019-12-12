@@ -34,12 +34,16 @@
             var peachCounter = 0;
             var currentInstanceCount = 0;
 
-            var ws = new WebSocket("ws://127.0.0.1:9292/websocket");
+            var ws = new WebSocket("ws://localhost:9292/websocket");
             ws.onopen = function () {
                 console.log("Websocket connection open ...");
             };
             ws.onmessage = function (evt) {
+
                 var received_msg = JSON.parse(evt.data);
+
+                console.log("Message received! Fruit = " + received_msg.name + " | App Instance = " + received_msg.appInstance);
+
                 if (received_msg.name === 'apple') {
                     appleCounter = ((appleCounter === 0) ? 1 : ++appleCounter);
                     data.setValue(0, 1, received_msg.appInstance);
@@ -65,19 +69,14 @@
                 chart.draw(data, options);
                 performModuloOps(received_msg.instanceCount);
 
-                console.log("Message received! Fruit = " + received_msg.name + " | App Instance = " + received_msg.appInstance);
+//                console.log("Message received! Fruit = " + received_msg.name + " | App Instance = " + received_msg.appInstance);
             };
 
             var options = {
                 title: 'Application Instance Group vs. Fruit Bucket',
                 vAxis: {baseline: 10, title: 'Fruit Count in the Bucket'},
-                hAxis: {
-                    scaleType: 'mirror',
-                    title: 'Application Instance Group',
-                    viewWindow: {min: -1},
-                    showTextEvery: 1,
-                    gridlines: {count: 10}
-                },
+                colorAxis: {colors: ['yellow', 'red']},
+                hAxis: {minValue: -1, maxValue: 2, title: 'Application Instance Group'},
                 bubble: {
                     textStyle: {
                         fontSize: 12,
@@ -92,17 +91,18 @@
             var chart = new google.visualization.BubbleChart(document.getElementById('appPartitionCntr'));
             chart.draw(data, options);
 
-            function performModuloOps(instanceCount) {
-                if (currentInstanceCount !== instanceCount) {
-                    currentInstanceCount = instanceCount;
-                    var mathCntr = document.getElementById('mathCntr');
+                function performModuloOps(instanceCount) {
+                // if (currentInstanceCount !== instanceCount) {
+                //     instanceCount = 3;
+                //     currentInstanceCount = instanceCount;
+                //     var mathCntr = document.getElementById('mathCntr');
                     mathCntr.innerHTML = "<strong>The Math for [" + instanceCount + "] App Instances<br /><br /></strong>" +
                             " Apple will land at: " + 0 % instanceCount + " <i>[ie: 0 % " + instanceCount + "]</i> <br />" +
                             " Orange will land at: " + 1 % instanceCount + " <i>[ie: 1 % " + instanceCount + "]</i> <br />" +
                             " Pineapple will land at: " + 2 % instanceCount + " <i>[ie: 2 % " + instanceCount + "]</i> <br />" +
                             " Cherry will land at: " + 3 % instanceCount + " <i>[ie: 3 % " + instanceCount + "]</i> <br />" +
                             " Peach will land at: " + 4 % instanceCount + " <i>[ie: 4 % " + instanceCount + "]</i> <br />";
-                }
+                // }
             }
         }
     </script>

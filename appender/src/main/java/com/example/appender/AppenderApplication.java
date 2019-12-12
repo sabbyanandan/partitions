@@ -30,9 +30,10 @@ public class AppenderApplication {
 	@StreamListener(Processor.INPUT)
 	@SendTo(Processor.OUTPUT)
 	public Fruit appendHandler(Fruit fruit) {
-		logger.info("applicationIndex = " + applicationIndex + " instanceCount = " + instanceCount);
-		fruit.setAppInstance(applicationIndex == null ? -1 : Integer.parseInt(applicationIndex));
 		fruit.setInstanceCount(instanceCount == null ? -1 : Integer.parseInt(instanceCount));
+		fruit.setAppInstance(applicationIndex == null ? -1 : Integer.parseInt(applicationIndex));
+		logger.info("applicationIndex = " + applicationIndex + " instanceCount = " + instanceCount + " For Fruit = "
+				+ fruit);
 		return fruit;
 	}
 }
