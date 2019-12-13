@@ -32,7 +32,7 @@
             var pineappleCounter = 0;
             var cherryCounter = 0;
             var peachCounter = 0;
-            var currentInstanceCount = 0;
+            var currenttotalInstanceCount = 0;
 
             var ws = new WebSocket("ws://localhost:9292/websocket");
             ws.onopen = function () {
@@ -42,32 +42,32 @@
 
                 var received_msg = JSON.parse(evt.data);
 
-                console.log("Message received! Fruit = " + received_msg.name + " | App Instance = " + received_msg.appInstance);
+                console.log("Message received! Fruit = " + received_msg.name + " | App Instance = " + received_msg.currentAppInstance);
 
                 if (received_msg.name === 'apple') {
                     appleCounter = ((appleCounter === 0) ? 1 : ++appleCounter);
-                    data.setValue(0, 1, received_msg.appInstance);
+                    data.setValue(0, 1, received_msg.currentAppInstance);
                     data.setValue(0, 2, appleCounter);
                 } else if (received_msg.name === 'orange') {
                     orangeCounter = ((orangeCounter === 0) ? 1 : ++orangeCounter);
-                    data.setValue(1, 1, received_msg.appInstance);
+                    data.setValue(1, 1, received_msg.currentAppInstance);
                     data.setValue(1, 2, orangeCounter);
                 } else if (received_msg.name === 'pineapple') {
                     pineappleCounter = ((pineappleCounter === 0) ? 1 : ++pineappleCounter);
-                    data.setValue(2, 1, received_msg.appInstance);
+                    data.setValue(2, 1, received_msg.currentAppInstance);
                     data.setValue(2, 2, pineappleCounter);
                 } else if (received_msg.name === 'cherry') {
                     cherryCounter = ((cherryCounter === 0) ? 1 : ++cherryCounter);
-                    data.setValue(3, 1, received_msg.appInstance);
+                    data.setValue(3, 1, received_msg.currentAppInstance);
                     data.setValue(3, 2, cherryCounter);
                 } else if (received_msg.name === 'peach') {
                     peachCounter = ((peachCounter === 0) ? 1 : ++peachCounter);
-                    data.setValue(4, 1, received_msg.appInstance);
+                    data.setValue(4, 1, received_msg.currentAppInstance);
                     data.setValue(4, 2, peachCounter);
                 }
 
                 chart.draw(data, options);
-                performModuloOperation(received_msg.instanceCount);
+                performModuloOperation(received_msg.totalInstanceCount);
             };
 
             var options = {
@@ -89,17 +89,17 @@
             var chart = new google.visualization.BubbleChart(document.getElementById('appPartitionCntr'));
             chart.draw(data, options);
 
-            function performModuloOperation(instanceCount) {
-                // if (currentInstanceCount !== instanceCount) {
-                //     instanceCount = 3;
-                //     currentInstanceCount = instanceCount;
+            function performModuloOperation(totalInstanceCount) {
+                // if (currenttotalInstanceCount !== totalInstanceCount) {
+                //     totalInstanceCount = 3;
+                //     currenttotalInstanceCount = totalInstanceCount;
                 //     var mathCntr = document.getElementById('mathCntr');
-                mathCntr.innerHTML = "<strong>The Math for [" + instanceCount + "] App Instances<br /><br /></strong>" +
-                    " Apple will land at: " + 0 % instanceCount + " <i>[ie: 0 % " + instanceCount + "]</i> <br />" +
-                    " Orange will land at: " + 1 % instanceCount + " <i>[ie: 1 % " + instanceCount + "]</i> <br />" +
-                    " Pineapple will land at: " + 2 % instanceCount + " <i>[ie: 2 % " + instanceCount + "]</i> <br />" +
-                    " Cherry will land at: " + 3 % instanceCount + " <i>[ie: 3 % " + instanceCount + "]</i> <br />" +
-                    " Peach will land at: " + 4 % instanceCount + " <i>[ie: 4 % " + instanceCount + "]</i> <br />";
+                mathCntr.innerHTML = "<strong>The Math for [" + totalInstanceCount + "] App Instances<br /><br /></strong>" +
+                    " Apple (Id =  0) will land at: " + 0 % totalInstanceCount + " <i>[ie: 0 % " + totalInstanceCount + "]</i> <br />" +
+                    " Orange (Id =  1) will land at: " + 1 % totalInstanceCount + " <i>[ie: 1 % " + totalInstanceCount + "]</i> <br />" +
+                    " Pineapple (Id =  2) will land at: " + 2 % totalInstanceCount + " <i>[ie: 2 % " + totalInstanceCount + "]</i> <br />" +
+                    " Cherry (Id =  3) will land at: " + 3 % totalInstanceCount + " <i>[ie: 3 % " + totalInstanceCount + "]</i> <br />" +
+                    " Peach (Id =  4) will land at: " + 4 % totalInstanceCount + " <i>[ie: 4 % " + totalInstanceCount + "]</i> <br />";
             }
 
             // }
