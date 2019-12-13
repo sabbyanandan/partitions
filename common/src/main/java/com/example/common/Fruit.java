@@ -9,9 +9,9 @@ public class Fruit {
 
 	String name;
 
-	int appInstance;
+	int currentAppInstance;
 
-	int instanceCount;
+	int totalInstanceCount;
 
 	public Fruit() {
 	}
@@ -21,10 +21,10 @@ public class Fruit {
 		this.name = name;
 	}
 
-	public Fruit(int id, String name, int instanceCount) {
+	public Fruit(int id, String name, int totalInstanceCount) {
 		this.id = id;
 		this.name = name;
-		this.instanceCount = instanceCount;
+		this.totalInstanceCount = totalInstanceCount;
 	}
 
 	public int getId() {
@@ -43,28 +43,28 @@ public class Fruit {
 		this.name = name;
 	}
 
-	public int getAppInstance() {
-		return appInstance;
+	public int getCurrentAppInstance() {
+		return currentAppInstance;
 	}
 
-	public void setAppInstance(int appInstance) {
-		this.appInstance = appInstance;
+	public void setCurrentAppInstance(int currentAppInstance) {
+		this.currentAppInstance = currentAppInstance;
 	}
 
-	public int getInstanceCount() {
-		return instanceCount;
+	public int getTotalInstanceCount() {
+		return totalInstanceCount;
 	}
 
-	public void setInstanceCount(int partitionCount) {
-		this.instanceCount = partitionCount;
+	public void setTotalInstanceCount(int partitionCount) {
+		this.totalInstanceCount = partitionCount;
 	}
 
 	@Override public String toString() {
 		return "Fruit{" +
 				"id=" + id +
 				", name='" + name + '\'' +
-				", appInstance=" + appInstance +
-				", instanceCount=" + instanceCount +
+				", appInstance=" + currentAppInstance +
+				", instanceCount=" + totalInstanceCount +
 				'}';
 	}
 

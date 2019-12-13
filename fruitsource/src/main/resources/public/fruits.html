@@ -67,16 +67,14 @@
                 }
 
                 chart.draw(data, options);
-                performModuloOps(received_msg.instanceCount);
-
-//                console.log("Message received! Fruit = " + received_msg.name + " | App Instance = " + received_msg.appInstance);
+                performModuloOperation(received_msg.instanceCount);
             };
 
             var options = {
-                title: 'Application Instance Group vs. Fruit Bucket',
-                vAxis: {baseline: 10, title: 'Fruit Count in the Bucket'},
+                title: 'Application Instance vs. Fruit Bucket',
+                vAxis: {minValue: -2, baseline: 10, title: 'Fruit Count in the Bucket'},
                 colorAxis: {colors: ['yellow', 'red']},
-                hAxis: {minValue: -1, maxValue: 2, title: 'Application Instance Group'},
+                hAxis: {minValue: -2, maxValue: 4, title: 'Application Instance'},
                 bubble: {
                     textStyle: {
                         fontSize: 12,
@@ -91,19 +89,20 @@
             var chart = new google.visualization.BubbleChart(document.getElementById('appPartitionCntr'));
             chart.draw(data, options);
 
-                function performModuloOps(instanceCount) {
+            function performModuloOperation(instanceCount) {
                 // if (currentInstanceCount !== instanceCount) {
                 //     instanceCount = 3;
                 //     currentInstanceCount = instanceCount;
                 //     var mathCntr = document.getElementById('mathCntr');
-                    mathCntr.innerHTML = "<strong>The Math for [" + instanceCount + "] App Instances<br /><br /></strong>" +
-                            " Apple will land at: " + 0 % instanceCount + " <i>[ie: 0 % " + instanceCount + "]</i> <br />" +
-                            " Orange will land at: " + 1 % instanceCount + " <i>[ie: 1 % " + instanceCount + "]</i> <br />" +
-                            " Pineapple will land at: " + 2 % instanceCount + " <i>[ie: 2 % " + instanceCount + "]</i> <br />" +
-                            " Cherry will land at: " + 3 % instanceCount + " <i>[ie: 3 % " + instanceCount + "]</i> <br />" +
-                            " Peach will land at: " + 4 % instanceCount + " <i>[ie: 4 % " + instanceCount + "]</i> <br />";
-                // }
+                mathCntr.innerHTML = "<strong>The Math for [" + instanceCount + "] App Instances<br /><br /></strong>" +
+                    " Apple will land at: " + 0 % instanceCount + " <i>[ie: 0 % " + instanceCount + "]</i> <br />" +
+                    " Orange will land at: " + 1 % instanceCount + " <i>[ie: 1 % " + instanceCount + "]</i> <br />" +
+                    " Pineapple will land at: " + 2 % instanceCount + " <i>[ie: 2 % " + instanceCount + "]</i> <br />" +
+                    " Cherry will land at: " + 3 % instanceCount + " <i>[ie: 3 % " + instanceCount + "]</i> <br />" +
+                    " Peach will land at: " + 4 % instanceCount + " <i>[ie: 4 % " + instanceCount + "]</i> <br />";
             }
+
+            // }
         }
     </script>
 </head>

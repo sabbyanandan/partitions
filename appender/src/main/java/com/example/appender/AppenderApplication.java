@@ -16,10 +16,10 @@ import org.springframework.messaging.handler.annotation.SendTo;
 public class AppenderApplication {
 
 	@Value("${SPRING_APPLICATION_INDEX:${spring.application.index:0}}")
-	private String applicationIndex;
+	private String currentApplicationIndexInEnvVar;
 
 	@Value("${SPRING.CLOUD.STREAM.INSTANCE_COUNT:${spring.cloud.stream.instanceCount:0}}")
-	private String instanceCount;
+	private String totalInstanceCountInEnvVar;
 
 	Logger logger = LoggerFactory.getLogger(AppenderApplication.class);
 
@@ -30,9 +30,12 @@ public class AppenderApplication {
 	@StreamListener(Processor.INPUT)
 	@SendTo(Processor.OUTPUT)
 	public Fruit appendHandler(Fruit fruit) {
-		fruit.setInstanceCount(instanceCount == null ? -1 : Integer.parseInt(instanceCount));
-		fruit.setAppInstance(applicationIndex == null ? -1 : Integer.parseInt(applicationIndex));
-		logger.info("applicationIndex = " + applicationIndex + " instanceCount = " + instanceCount + " For Fruit = "
+		fruit.setTotalInstanceCount(
+				totalInstanceCountInEnvVar == null ? -1 : Integer.parseInt(totalInstanceCountInEnvVar));
+		fruit.setCurrentAppInstance(
+				currentApplicationIndexInEnvVar == null ? -1 : Integer.parseInt(currentApplicationIndexInEnvVar));
+		logger.info("applicationIndex = " + currentApplicationIndexInEnvVar + " instanceCount = "
+				+ totalInstanceCountInEnvVar + " For Fruit = "
 				+ fruit);
 		return fruit;
 	}
