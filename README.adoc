@@ -5,9 +5,18 @@
 ----
 app register --name fruits --type source --uri maven://com.example:fruitsource:0.0.1-SNAPSHOT
 app register --name appender --type processor --uri maven://com.example:appender:0.0.1-SNAPSHOT
-app import --uri https://dataflow.spring.io/rabbitmq-maven-latest
+app import --uri https://dataflow.spring.io/kafka-maven-latest
+----
 
+Rabbit:
+----
 stream create foozs --definition "fruits --server.port=9003 | appender | websocket --server.port=9000"
+stream deploy --name foozs --properties "app.fruits.producer.partitionKeyExpression=payload.id,deployer.appender.count=3"
+----
+
+Kafka:
+----
+stream create foozs --definition "fruits --server.port=9003 | appender --spring.cloud.stream.kafka.binder.autoAddPartitions=true | websocket --server.port=9000"
 stream deploy --name foozs --properties "app.fruits.producer.partitionKeyExpression=payload.id,deployer.appender.count=3"
 ----
 
