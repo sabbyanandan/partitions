@@ -10,8 +10,8 @@ app register --name appender --type processor --uri maven://com.example:appender
 app import --uri https://dataflow.spring.io/rabbitmq-maven-latest
 
 
-stream create foozs2 --definition "fruits --server.port=9003 | appender | websocket --server.port=9000"
-stream deploy --name foozs2 --properties "app.fruits.producer.partitionKeyExpression=payload.id,deployer.appender.count=3"
+stream create fooz --definition "fruits --server.port=9003 | appender | websocket --server.port=9000"
+stream deploy --name fooz --properties "app.fruits.producer.partitionKeyExpression=payload.id,deployer.appender.count=3"
 ----
 
 Kafka:
@@ -21,20 +21,25 @@ app register --name fruits --type source --uri maven://com.example:fruitsource:0
 app register --name appender --type processor --uri maven://com.example:appender:0.0.1-SNAPSHOT
 app import --uri https://dataflow.spring.io/kafka-maven-latest
 
-stream create foozs2 --definition "fruits --server.port=9003 | appender --spring.cloud.stream.kafka.binder.autoAddPartitions=true | websocket --server.port=9000"
-stream deploy --name foozs2 --properties "app.fruits.producer.partitionKeyExpression=payload.id,deployer.appender.count=3"
+Static Partition:
+stream create fooz --definition "fruits --server.port=9003 | appender --spring.cloud.stream.kafka.bindings.input.consumer.autoRebalanceEnabled=false --spring.cloud.stream.kafka.binder.autoAddPartitions=true | websocket --server.port=9000"
+
+Dynamic Partition:
+stream create fooz --definition "fruits --server.port=9003 | appender --spring.cloud.stream.kafka.binder.autoAddPartitions=true | websocket --server.port=9000"
+stream deploy --name foozs12 --properties "app.fruits.producer.partitionKeyExpression=payload.id,deployer.appender.count=3"
+
 ----
 
 To scale appender:
 [source,bash,options=nowrap,subs=attributes]
 ----
-http post http://localhost:9393/streams/deployments/scale/foozs2/appender/instances/4
+http post http://localhost:9393/streams/deployments/scale/fooz/appender/instances/4
 ----
 
 To override partitioning characteristics:
 [source,bash,options=nowrap,subs=attributes]
 ----
-echo '{"releaseName":"foozs2","packageIdentifier":{"packageName":"foozs2"},"updateProperties":{"app.fruits.producer.partitionCount":4,"app.appender.spring.cloud.stream.instanceCount":4}}' | http http://localhost:9393/streams/deployments/update/foozs2
+echo '{"releaseName":"fooz","packageIdentifier":{"packageName":"fooz"},"updateProperties":{"app.fruits.producer.partitionCount":4,"app.appender.spring.cloud.stream.instanceCount":4}}' | http http://localhost:9393/streams/deployments/update/fooz
 ----
 
 == CF

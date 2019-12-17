@@ -15,7 +15,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 @EnableBinding(Processor.class)
 public class AppenderApplication {
 
-	@Value("${SPRING_APPLICATION_INDEX:${spring.application.index:0}}")
+	@Value("${SPRING_APPLICATION_INDEX:${spring.cloud.stream.instanceIndex:0}}")
 	private String currentApplicationIndexInEnvVar;
 
 	@Value("${SPRING.CLOUD.STREAM.INSTANCE_COUNT:${spring.cloud.stream.instanceCount:0}}")
@@ -34,8 +34,8 @@ public class AppenderApplication {
 				totalInstanceCountInEnvVar == null ? -1 : Integer.parseInt(totalInstanceCountInEnvVar));
 		fruit.setCurrentAppInstance(
 				currentApplicationIndexInEnvVar == null ? -1 : Integer.parseInt(currentApplicationIndexInEnvVar));
-		logger.info("applicationIndex = " + currentApplicationIndexInEnvVar + " instanceCount = "
-				+ totalInstanceCountInEnvVar + " For Fruit = "
+		logger.info("currentApplicationIndexInEnvVar = " + fruit.getCurrentAppInstance() + " instanceCount = "
+				+ fruit.getTotalInstanceCount() + " For Fruit = "
 				+ fruit);
 		return fruit;
 	}

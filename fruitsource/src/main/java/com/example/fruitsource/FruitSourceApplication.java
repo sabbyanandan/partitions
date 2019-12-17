@@ -26,7 +26,7 @@ public class FruitSourceApplication {
 		SpringApplication.run(FruitSourceApplication.class, args);
 	}
 
-	@InboundChannelAdapter(channel = Source.OUTPUT, poller = @Poller(fixedDelay = "1000"))
+	@InboundChannelAdapter(channel = Source.OUTPUT, poller = @Poller(fixedDelay = "2000"))
 	public Fruit sourceHandler() {
 		String fruit = fruits.get(new Random().nextInt(fruits.size()));
 		Fruit newFruit = new Fruit(fruits.indexOf(fruit), fruit);

@@ -63,8 +63,8 @@ public class Fruit {
 		return "Fruit{" +
 				"id=" + id +
 				", name='" + name + '\'' +
-				", appInstance=" + currentAppInstance +
-				", instanceCount=" + totalInstanceCount +
+				", currentAppInstance=" + currentAppInstance +
+				", totalInstanceCount=" + totalInstanceCount +
 				'}';
 	}
 

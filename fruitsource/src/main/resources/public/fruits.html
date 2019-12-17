@@ -32,16 +32,18 @@
             var pineappleCounter = 0;
             var cherryCounter = 0;
             var peachCounter = 0;
-            var currenttotalInstanceCount = 0;
 
             var ws = new WebSocket("ws://localhost:9292/websocket");
+
+            // initial connection message
             ws.onopen = function () {
                 console.log("Websocket connection open ...");
             };
+
+            // data processing begins
             ws.onmessage = function (evt) {
 
                 var received_msg = JSON.parse(evt.data);
-
                 console.log("Message received! Fruit = " + received_msg.name + " | App Instance = " + received_msg.currentAppInstance);
 
                 if (received_msg.name === 'apple') {
@@ -90,19 +92,13 @@
             chart.draw(data, options);
 
             function performModuloOperation(totalInstanceCount) {
-                // if (currenttotalInstanceCount !== totalInstanceCount) {
-                //     totalInstanceCount = 3;
-                //     currenttotalInstanceCount = totalInstanceCount;
-                //     var mathCntr = document.getElementById('mathCntr');
-                mathCntr.innerHTML = "<strong>The Math for [" + totalInstanceCount + "] App Instances<br /><br /></strong>" +
-                    " Apple (Id =  0) will land at: " + 0 % totalInstanceCount + " <i>[ie: 0 % " + totalInstanceCount + "]</i> <br />" +
-                    " Orange (Id =  1) will land at: " + 1 % totalInstanceCount + " <i>[ie: 1 % " + totalInstanceCount + "]</i> <br />" +
-                    " Pineapple (Id =  2) will land at: " + 2 % totalInstanceCount + " <i>[ie: 2 % " + totalInstanceCount + "]</i> <br />" +
-                    " Cherry (Id =  3) will land at: " + 3 % totalInstanceCount + " <i>[ie: 3 % " + totalInstanceCount + "]</i> <br />" +
-                    " Peach (Id =  4) will land at: " + 4 % totalInstanceCount + " <i>[ie: 4 % " + totalInstanceCount + "]</i> <br />";
+                mathCntr.innerHTML = "<strong>The Math for [" + totalInstanceCount + "] App Instances <i>(Formula = key.hashCode() % " + totalInstanceCount + ")</i><br /><br /></strong>" +
+                    " Apple (key =  0) will land at: " + 0 % totalInstanceCount + " <i>[ie: 0 % " + totalInstanceCount + "]</i> <br />" +
+                    " Orange (key =  1) will land at: " + 1 % totalInstanceCount + " <i>[ie: 1 % " + totalInstanceCount + "]</i> <br />" +
+                    " Pineapple (key =  2) will land at: " + 2 % totalInstanceCount + " <i>[ie: 2 % " + totalInstanceCount + "]</i> <br />" +
+                    " Cherry (key =  3) will land at: " + 3 % totalInstanceCount + " <i>[ie: 3 % " + totalInstanceCount + "]</i> <br />" +
+                    " Peach (key =  4) will land at: " + 4 % totalInstanceCount + " <i>[ie: 4 % " + totalInstanceCount + "]</i> <br />";
             }
-
-            // }
         }
     </script>
 </head>
