@@ -10,7 +10,7 @@ app register --name appender --type processor --uri maven://com.example:appender
 app import --uri https://dataflow.spring.io/rabbitmq-maven-latest
 
 
-stream create fooz --definition "fruits --server.port=9003 | appender | websocket --server.port=9000"
+stream create fooz --definition "fruits --server.port=9003 | appender | websocket"
 stream deploy --name fooz --properties "app.fruits.producer.partitionKeyExpression=payload.id,deployer.appender.count=3"
 ----
 
@@ -22,10 +22,10 @@ app register --name appender --type processor --uri maven://com.example:appender
 app import --uri https://dataflow.spring.io/kafka-maven-latest
 
 Static Partition:
-stream create fooz --definition "fruits --server.port=9003 | appender --spring.cloud.stream.kafka.bindings.input.consumer.autoRebalanceEnabled=false --spring.cloud.stream.kafka.binder.autoAddPartitions=true | websocket --server.port=9000"
+stream create fooz --definition "fruits --server.port=9003 | appender --spring.cloud.stream.kafka.bindings.input.consumer.autoRebalanceEnabled=false --spring.cloud.stream.kafka.binder.autoAddPartitions=true | websocket"
 
 Dynamic Partition:
-stream create fooz --definition "fruits --server.port=9003 | appender --spring.cloud.stream.kafka.binder.autoAddPartitions=true | websocket --server.port=9000"
+stream create fooz --definition "fruits --server.port=9003 | appender --spring.cloud.stream.kafka.binder.autoAddPartitions=true | websocket"
 stream deploy --name foozs12 --properties "app.fruits.producer.partitionKeyExpression=payload.id,deployer.appender.count=3"
 
 ----
@@ -48,7 +48,7 @@ echo '{"releaseName":"fooz","packageIdentifier":{"packageName":"fooz"},"updatePr
 app register --name fruits --type source --uri https://github.com/sabbyanandan/partitions/raw/master/jars/fruitsource-0.0.1-SNAPSHOT.jar --force
 app register --name appender --type processor --uri https://github.com/sabbyanandan/partitions/raw/master/jars/appender-0.0.1-SNAPSHOT.jar --force
 app register --name websocket --type sink --uri maven://org.springframework.cloud.stream.app:websocket-sink-rabbit:2.1.1.RELEASE --force
-stream create foo --definition "fruits | appender | websocket --server.port=9000"
+stream create foo --definition "fruits | appender | websocket"
 stream deploy --name foo --properties "app.fruits.producer.partitionKeyExpression=payload.id,deployer.appender.count=3"
 ----
 
@@ -59,6 +59,6 @@ app register --name fruits --type source --uri docker:sabby/fruitsource:0.0.2-SN
 app register --name appender --type processor --uri docker:sabby/appender:0.0.3-SNAPSHOT --force
 app register --name websocket --type sink --uri docker:springcloudstream/websocket-sink-rabbit:2.1.1.RELEASE --force
 
-stream create foo --definition "fruits | appender | websocket --server.port=9000"
+stream create foo --definition "fruits | appender | websocket"
 stream deploy --name foo --properties "app.fruits.producer.partitionKeyExpression=payload.id,deployer.appender.count=3"
 ----
